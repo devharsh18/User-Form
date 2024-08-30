@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Detail Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        /* === Main Content CSS === */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+
+        }
+
+        .bglight {
+            padding: 50px 25px 0;
+            max-width: 668px;
+            width: 100%;
+            margin: auto;
+            transition: padding 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bg-light::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("bg-1.svg");
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            z-index: -1;
+        }
+
+        .bg-light {
+            padding: 0 0 100px;
+            background-image: url("bg.png");
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: contain;
+            min-height: 100%;
+        }
+
+        .bg-light .logo img {
+            max-width: 40%;
+            animation: logoPop 0.5s ease-in-out;
+        }
+
+        .container {
+            max-width: 80%;
+            padding: 20px;
+            margin: auto;
+            transition: padding 0.3s, margin 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-section {
+            flex: 1 1 calc(33.333% - 20px);
+            padding: 20px;
+            margin: 15px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+
+        }
+
+        .form-section:hover {
+            box-shadow: 0 8px 16px rgb(2, 225, 255);
+
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .form-section:hover::before {
+            opacity: 1;
+        }
+
+        .form-section-header {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            font-size: 1.25em;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-header,
+        .card-footer {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-header:hover,
+        .card-footer:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+            z-index: 2;
+
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn-animated {
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-animated:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Password Strength Meter */
+        .strength-meter {
+            height: 10px;
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .strength-meter-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        .strength-meter-fill.weak {
+            background-color: red;
+            width: 33%;
+        }
+
+        .strength-meter-fill.medium {
+            background-color: yellow;
+            width: 66%;
+        }
+
+        .strength-meter-fill.strong {
+            background-color: green;
+            width: 100%;
+        }
+
+        .password-recommendations {
+            font-size: 0.9em;
+            color: gray;
+        }
+
+        .password-recommendations.weak {
+            color: red;
+        }
+
+        .password-recommendations.medium {
+            color: orange;
+        }
+
+        .password-recommendations.strong {
+            color: green;
+        }
+
+        /* Captcha */
+        .captcha {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .captcha img {
+            cursor: pointer;
+            display: block;
+            margin: 0 auto 15px auto;
+        }
+
+        .captcha #refreshCaptcha {
+            display: block;
+            margin: 0 auto 20px auto;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+
+        .input-group-append .input-group-text {
+            background-color: white;
+            border-left: 0;
+            cursor: pointer;
+        }
+
+        /* Education Group */
+        .education-group {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .education-group input,
+        .education-group select {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(243, 5, 5, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .education-group input:focus,
+        .education-group select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .invalid {
+            border-color: red;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .education-group {
+                flex-wrap: wrap;
+            }
+        }
+
+
+        @media (max-width: 992px) {
+            .form-section {
+                flex: 1 1 calc(50% - 20px);
+                /* Adjust to 2 columns on medium screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-section {
+                flex: 1 1 100%;
+                /* Stack vertically on small screens */
+            }
+        }
+    </style>
+</head>
+
+
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <a class="navbar-brand" href="#">UserForm</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 col-sm-12">
+                <div class="card mt-5 shadow-lg">
+                    <div class="card-header text-center">
+                        <h2>User Detail Form</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="connect.php" method="post" id="registrationForm">
+                            <div class="form-section">
+                                <div class="form-section-header">Personal Information</div>
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                    <div class="invalid-feedback">First Name is required and should be at least 2
+                                        characters long.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                    <div class="invalid-feedback">Last Name is required and should be at least 2
+                                        characters long.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="male" name="gender" value="Male"
+                                                class="custom-control-input" required>
+                                            <label class="custom-control-label" for="male">Male</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="female" name="gender" value="Female"
+                                                class="custom-control-input" required>
+                                            <label class="custom-control-label" for="female">Female</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="others" name="gender" value="other"
+                                                class="custom-control-input" required>
+                                            <label class="custom-control-label" for="others">Others</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" class="form-control" id="dob" name="dob" required>
+                                    <div class="invalid-feedback">Please enter a valid date of birth.</div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-header">Contact Information</div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="password-strength mt-2">
+                                        <div class="strength-meter" id="strengthMeter">
+                                            <div class="strength-meter-fill"></div>
+                                        </div>
+                                        <div class="password-recommendations mt-1" id="passwordRecommendations">
+                                            Strength of the password.....
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="number">Phone Number</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <select class="form-control" id="countryCode" name="countryCode" required>
+                                                <option value="+91">+91 India</option>
+                                                <option value="+1">+1 USA</option>
+
+
+                                                <!-- Add other country codes here -->
+                                            </select>
+                                        </div>
+                                        <input type="tel" class="form-control" id="number" name="number"
+                                            placeholder="1234567890" required>
+                                    </div>
+                                    <div class="invalid-feedback">Please enter a valid phone number.</div>
+                                </div>
+                            </div>
+                            <div class="form-section">
+                                <div class="form-section-header">Address Information</div>
+                                <div class="form-group">
+                                    <label for="streetAddress">Street Address</label>
+                                    <input type="text" class="form-control" id="streetAddress" name="streetAddress"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State/Province</label>
+                                    <select class="form-control" id="state" name="state" onchange="updateCityDropdown()"
+                                        required>
+                                        <option value="">Select State</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                        <option value="Assam">Assam</option>
+                                        <option value="Bihar">Bihar</option>
+                                        <option value="Chhattisgarh">Chhattisgarh</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Gujarat">Gujarat</option>
+                                        <option value="Haryana">Haryana</option>
+                                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                        <option value="Jharkhand">Jharkhand</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Kerala">Kerala</option>
+                                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Manipur">Manipur</option>
+                                        <option value="Meghalaya">Meghalaya</option>
+                                        <option value="Mizoram">Mizoram</option>
+                                        <option value="Nagaland">Nagaland</option>
+                                        <option value="Odisha">Odisha</option>
+                                        <option value="Punjab">Punjab</option>
+                                        <option value="Rajasthan">Rajasthan</option>
+                                        <option value="Sikkim">Sikkim</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Tripura">Tripura</option>
+                                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                        <option value="Uttarakhand">Uttarakhand</option>
+                                        <option value="West Bengal">West Bengal</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <select class="form-control" id="city" name="city" required>
+                                        <option value="">Select City</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">Postal/Zip Code</label>
+                                    <input type="text" class="form-control" id="postalCode" name="postalCode" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-header">Educational Qualifications</div>
+                                <div id="educationContainer">
+                                    <div class="education-group">
+                                        <input type="text" class="form-control mb-2" name="institution[]"
+                                            placeholder="Institution" required>
+
+                                        <input type="text" class="form-control mb-2" name="qualification[]"
+                                            placeholder="Qualification" required>
+
+                                        <select class="form-control mb-2" name="year[]" required>
+                                            <option value="">Select Year</option>
+                                            <!-- Populate years dynamically -->
+                                        </select>
+                                        <button type="button" class="remove-btn"
+                                            onclick="removeEducation(this)">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary mb-3" onclick="addEducation()">Add More
+                                    Education</button>
+                            </div>
+                            
+                            <div class="form-section">
+                                <div class="form-section-header">Work Experience</div>
+                                <div id="workExperienceContainer">
+                                    <div class="work-experience-group">
+                                        <input type="text" class="form-control mb-2" name="company[]" placeholder="Company" required>
+                                        <input type="text" class="form-control mb-2" name="role[]" placeholder="Role" required>
+                                        <input type="text" class="form-control mb-2" name="duration[]" placeholder="Duration" required>
+                                        <button type="button" class="remove-btn" onclick="removeWorkExperience(this)">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary mb-3" onclick="addWorkExperience()">Add More Work Experience</button>
+                            </div>
+
+
+                            <div class="form-section">
+                                <div class="form-section-header">Verification</div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <img src="captcha.php" alt="Captcha Image" id="captchaImage"
+                                                class="d-block mx-auto mb-2">
+                                            <button type="button" class="btn btn-link d-block mx-auto mb-3"
+                                                id="refreshCaptcha">Refresh</button>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label for="captcha">Captcha:</label>
+                                            <input type="text" class="form-control" id="captcha"
+                                                placeholder="Enter captcha" name="captcha" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block btn-animated" value="Submit">
+                        </form>
+                    </div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT9RtvYj30PJfXh1/ScQSBLVdO9K38llDxE6RztF5Cg6d526L2" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-pzjw8f+ua7Kw1TIq5tvb6F9sV0Pwgzq1BTcfDvm8WtIBlzL2cv5G6eNp5dKgIpMf" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        </script>
+    <script>
+
+        // Email validation
+        document.getElementById('email').addEventListener('input', function () {
+            const emailInput = this;
+            const email = emailInput.value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (emailPattern.test(email)) {
+                emailInput.classList.remove('invalid');
+                emailInput.setCustomValidity('');
+            } else {
+                emailInput.classList.add('invalid');
+                emailInput.setCustomValidity('Please enter a valid email address.');
+                emailInput.reportValidity();
+            }
+        });
+
+
+        document.getElementById('password').addEventListener('input', function () {
+            const passwordInput = this.value;
+            const strengthMeterFill = document.getElementById('strengthMeter').firstElementChild;
+            const recommendations = document.getElementById('passwordRecommendations');
+            let strength = 0;
+
+            if (passwordInput.length >= 8) strength++;
+            if (/[A-Z]/.test(passwordInput)) strength++;
+            if (/[a-z]/.test(passwordInput)) strength++;
+            if (/[0-9]/.test(passwordInput)) strength++;
+            if (/[^A-Za-z0-9]/.test(passwordInput)) strength++;
+
+            if (strength <= 2) {
+                strengthMeterFill.className = 'strength-meter-fill weak';
+                recommendations.textContent = 'Weak password. Try adding more characters, including uppercase letters, numbers, and symbols.';
+                recommendations.className = 'password-recommendations weak';
+            } else if (strength <= 4) {
+                strengthMeterFill.className = 'strength-meter-fill medium';
+                recommendations.textContent = 'Medium strength. Adding more unique characters will make it stronger.';
+                recommendations.className = 'password-recommendations medium';
+            } else {
+                strengthMeterFill.className = 'strength-meter-fill strong';
+                recommendations.textContent = 'Strong password. Good job!';
+                recommendations.className = 'password-recommendations strong';
+            }
+        });
+
+
+
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+
+
+        // Phone number validation
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            const countryCode = document.getElementById('countryCode').value;
+            const phoneNumber = document.getElementById('number').value;
+            const combinedNumber = countryCode + phoneNumber;
+            const numberPattern = /^\+[0-9]{1,3}[0-9]{10}$/;
+
+            if (!numberPattern.test(combinedNumber)) {
+                alert('Please enter a valid phone number.');
+                event.preventDefault();
+            } else {
+                document.getElementById('number').value = combinedNumber;
+            }
+        });
+
+
+        const stateCityMapping = {
+            "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur"],
+            "Arunachal Pradesh": ["Itanagar", "Naharlagun"],
+            "Assam": ["Guwahati", "Dibrugarh", "Silchar"],
+            "Bihar": ["Patna", "Gaya", "Bhagalpur"],
+            "Chhattisgarh": ["Raipur", "Bhilai", "Korba"],
+            "Goa": ["Panaji", "Margao"],
+            "Gujarat": ["Ahmedabad", "Surat", "Vadodara"],
+            "Haryana": ["Chandigarh", "Faridabad", "Gurgaon"],
+            "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala"],
+            "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad"],
+            "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru"],
+            "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode"],
+            "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+            "Manipur": ["Imphal"],
+            "Meghalaya": ["Shillong"],
+            "Mizoram": ["Aizawl"],
+            "Nagaland": ["Kohima", "Dimapur"],
+            "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela"],
+            "Punjab": ["Ludhiana", "Amritsar", "Jalandhar"],
+            "Rajasthan": ["Jaipur", "Udaipur", "Jodhpur"],
+            "Sikkim": ["Gangtok"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"],
+            "Telangana": ["Hyderabad", "Warangal", "Nizamabad"],
+            "Tripura": ["Agartala"],
+            "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi"],
+            "Uttarakhand": ["Dehradun", "Haridwar", "Rishikesh"],
+            "West Bengal": ["Kolkata", "Howrah", "Darjeeling"]
+        };
+
+        function updateCityDropdown() {
+            const stateSelect = document.getElementById("state");
+            const citySelect = document.getElementById("city");
+            const selectedState = stateSelect.value;
+
+            // Clear the existing options in the city dropdown
+            citySelect.innerHTML = '<option value="">Select City</option>';
+
+            if (selectedState && stateCityMapping[selectedState]) {
+                const cities = stateCityMapping[selectedState];
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.text = city;
+                    citySelect.appendChild(option);
+                });
+            }
+        }
+
+        const currentYear = 2040;
+
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const newEducationGroup = document.createElement('div');
+            newEducationGroup.className = 'education-group';
+
+            newEducationGroup.innerHTML = `
+         <input type="text" class="form-control mb-2" name="institution[]" placeholder="Institution" required>
+        <input type="text" class="form-control mb-2" name="qualification[]" placeholder="Qualification" required>
+
+        <select class="form-control mb-2" name="year[]" required>
+            <option value="">Select Year</option>
+        </select>
+        <button type="button" class="remove-btn" onclick="removeEducation(this)">×</button>
+    `;
+
+            container.appendChild(newEducationGroup);
+
+            const newYearSelect = newEducationGroup.querySelector('select');
+            for (let year = currentYear; year >= 1900; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                newYearSelect.appendChild(option);
+            }
+        }
+
+        function removeEducation(button) {
+            const educationGroup = button.parentElement;
+            educationGroup.style.opacity = '0';
+            setTimeout(() => educationGroup.remove(), 300);
+        }
+        function addWorkExperience() {
+        var container = document.getElementById('workExperienceContainer');
+        var newWorkExperience = document.createElement('div');
+        newWorkExperience.className = 'work-experience-group';
+        newWorkExperience.innerHTML = `
+            <input type="text" class="form-control mb-2" name="company[]" placeholder="Company" required>
+            <input type="text" class="form-control mb-2" name="role[]" placeholder="Role" required>
+            <input type="text" class="form-control mb-2" name="duration[]" placeholder="Duration" required>
+            <button type="button" class="remove-btn" onclick="removeWorkExperience(this)">×</button>`;
+        container.appendChild(newWorkExperience);
+    }
+
+    function removeWorkExperience(element) {
+        var container = document.getElementById('workExperienceContainer');
+        container.removeChild(element.parentNode);
+    }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSelects = document.querySelectorAll('select[name="year[]"]');
+            yearSelects.forEach(select => {
+                for (let year = currentYear; year >= 1900; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    select.appendChild(option);
+                }
+            });
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            const requiredFields = ['firstName', 'lastName', 'email', 'password', 'number', 'captcha'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value) {
+                    alert(`Please fill out the ${field.previousElementSibling.innerText} field.`);
+                    field.focus();
+                    isValid = false;
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            if (isValid) {
+                const educationFields = document.querySelectorAll('#educationContainer input');
+                for (let field of educationFields) {
+                    if (!field.value) {
+                        alert(`Please fill out the ${field.placeholder} field.`);
+                        field.focus();
+                        isValid = false;
+                        event.preventDefault();
+                        return false;
+                    }
+                }
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+
+        });
+
+        // Script for refreshing captcha
+        document.getElementById('refreshCaptcha').addEventListener('click', function () {
+            document.getElementById('captchaImage').src = 'captcha.php?' + Date.now();
+        });
+
+        // Form validation
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            // Validate CAPTCHA
+            const captchaInput = document.getElementById('captcha');
+            const captchaValue = captchaInput.value;
+
+            if (!captchaValue) {
+                captchaInput.classList.add('invalid');
+                document.getElementById('captchaError').style.display = 'block';
+                event.preventDefault();
+            } else {
+                captchaInput.classList.remove('invalid');
+                document.getElementById('captchaError').style.display = 'none';
+            }
+        });
+
+        const captchaInput = document.getElementById('captcha').value;
+        $.post('captcha.php', { captcha: captchaInput }, function (response) {
+            if (response === 'success') {
+                document.getElementById('registrationForm').submit(); // Submit the form if CAPTCHA is correct
+            } else {
+                alert('Captcha doesn\'t match. Please try again.');
+                document.getElementById('captcha').focus();
+            }
+        });
+
+
+    </script>
+</body>
+</html>
